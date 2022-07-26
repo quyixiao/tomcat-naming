@@ -123,7 +123,6 @@ public class NamingContext implements Context {
      */
     protected String name;
 
-
     /**
      * Determines if an attempt to write to a read-only context results in an
      * exception or if the request is ignored.
