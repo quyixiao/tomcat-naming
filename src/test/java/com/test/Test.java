@@ -60,6 +60,7 @@ public class Test {
         ResourceLinkFactory.setGlobalContext(globalContext);
         ResourceLinkFactory.registerGlobalResourceAccess(
                 globalContext, resourceLink.getName(), resourceLink.getGlobal());
+
         Connection con = null;
         Statement stmt = null;
         ResultSet rs = null;

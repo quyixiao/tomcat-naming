@@ -18,6 +18,7 @@
 
 package org.apache.naming.factory;
 
+import com.test.lz.UserHome;
 import org.apache.naming.EjbRef;
 
 import javax.naming.*;
@@ -59,6 +60,10 @@ public class OpenEjbFactory implements ObjectFactory {
         if (obj instanceof EjbRef) {
 
             Reference ref = (Reference) obj;
+
+            if("com.test.lz.UserHome".equals(ref.getClassName())){
+                return new UserHome();
+            }
 
             String factory = DEFAULT_OPENEJB_FACTORY;
             RefAddr factoryRefAddr = ref.get("openejb.factory");
