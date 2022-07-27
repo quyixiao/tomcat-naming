@@ -10,6 +10,7 @@ import org.apache.naming.NamingContext;
 import org.apache.naming.ResourceLinkRef;
 import org.apache.naming.ResourceRef;
 import org.apache.naming.factory.ResourceLinkFactory;
+import org.apache.tomcat.mydb.MyDbDataSource;
 
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
@@ -64,19 +65,22 @@ public class Test {
         ResultSet rs = null;
 
         DataSource ds = (DataSource) namingContext.lookup("comp/env/jdbc/mysql");
-        System.out.println(ds);
-        con = ds.getConnection();
-        stmt = con.createStatement();
-        rs = stmt.executeQuery("select * from lt_company ");
-        while (rs.next()) {
-            System.out.println(
-                    "id=" + rs.getInt("id")
-                            + ",is_delete=" + rs.getInt("is_delete")
-                            + ",cooperate_type=" + rs.getInt("cooperate_type")
-                            + ",company_name=" + rs.getString("company_name")
-                            + ",company_code=" + rs.getString("company_code"));
+        if(ds instanceof MyDbDataSource){
+            System.out.println("自己写的测试db source ");
+        }else{
+            System.out.println(ds);
+            con = ds.getConnection();
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("select * from lt_company ");
+            while (rs.next()) {
+                System.out.println(
+                        "id=" + rs.getInt("id")
+                                + ",is_delete=" + rs.getInt("is_delete")
+                                + ",cooperate_type=" + rs.getInt("cooperate_type")
+                                + ",company_name=" + rs.getString("company_name")
+                                + ",company_code=" + rs.getString("company_code"));
+            }
         }
-
     }
 
 
@@ -102,6 +106,7 @@ public class Test {
         resource.setProperty("password", "Hello1234");
         resource.setProperty("maxActive", "5");
         resource.setProperty("maxIdle", "2");
+        resource.setProperty("factory", "org.apache.tomcat.mydb.MyDBDataSourceFactory");
         resource.setProperty("maxWait", "10000");
 
         resources[0] = resource;
